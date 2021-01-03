@@ -8,7 +8,6 @@ import com.example.academy.data.ModuleEntity
 class DetailCourseViewModel(private val academyRepository: AcademyRepository) : ViewModel() {
 
     private lateinit var courseId: String
-
     fun setSelectedCourse(courseId: String) {
         this.courseId = courseId
     }

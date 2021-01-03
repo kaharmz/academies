@@ -5,16 +5,16 @@ import com.example.academy.data.source.remote.response.CourseResponse
 import com.example.academy.data.source.remote.response.ModuleResponse
 import com.example.academy.utils.JsonHelper
 
-class RemoteDataSource private constructor(private val jsonHelper: JsonHelper){
+class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
 
     companion object {
 
         @Volatile
         private var instance: RemoteDataSource? = null
 
-        fun getInstance(helper: JsonHelper): RemoteDataSource = instance?: synchronized(this){
+        fun getInstance(helper: JsonHelper): RemoteDataSource = instance ?: synchronized(this) {
 
-            instance?: RemoteDataSource(helper)
+            instance ?: RemoteDataSource(helper)
         }
     }
 

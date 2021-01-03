@@ -20,15 +20,13 @@ class AcademyViewModelTest {
     @Mock
     private lateinit var academyRepository: AcademyRepository
 
-
-
     @Before
-    fun setUp(){
+    fun setUp() {
         viewModel = AcademyViewModel(academyRepository)
     }
 
     @Test
-    fun getCourses () {
+    fun getCourses() {
         `when`(academyRepository.getAllCourse()).thenReturn(DataDummy.generateDummyCourse())
         val courseEntities = viewModel.getCourse()
         verify(academyRepository).getAllCourse()

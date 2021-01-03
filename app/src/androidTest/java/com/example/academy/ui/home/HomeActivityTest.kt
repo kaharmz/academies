@@ -37,7 +37,7 @@ class HomeActivityTest {
     }
 
     @Test
-    fun loadModules(){
+    fun loadModules() {
         onView(withId(R.id.rv_academy)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.btn_start)).perform(click())
         onView(withId(R.id.rv_module)).check(matches(isDisplayed()))
@@ -52,7 +52,7 @@ class HomeActivityTest {
     }
 
     @Test
-    fun loadBookmarks(){
+    fun loadBookmarks() {
         onView(withText("Bookmark")).perform(click())
         onView(withId(R.id.rv_bookmark)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_bookmark)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyCourse.size))

@@ -26,21 +26,14 @@ class DetailCourseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val activityDetailCourseBinding = ActivityDetailCourseBinding.inflate(layoutInflater)
         detailContentBinding = activityDetailCourseBinding.detailContent
-
         setContentView(activityDetailCourseBinding.root)
-
         setSupportActionBar(activityDetailCourseBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         val factory = ViewModelFactory.getInstance(this)
-
         val viewModel = ViewModelProvider(this, factory)[DetailCourseViewModel::class.java]
-
         val adapter = DetailCourseAdapter()
-
         val extras = intent.extras
         when (extras) {
             null -> {

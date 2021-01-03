@@ -12,7 +12,6 @@ import com.example.academy.viewmodel.ViewModelFactory
 class CourseReaderActivity : AppCompatActivity(), CourseReaderCallback {
 
     companion object {
-
         const val EXTRA_COURSE_ID = "extra_course_id"
     }
 

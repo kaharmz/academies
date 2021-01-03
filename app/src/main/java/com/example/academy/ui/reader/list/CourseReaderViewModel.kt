@@ -4,7 +4,7 @@ import AcademyRepository
 import androidx.lifecycle.ViewModel
 import com.example.academy.data.ModuleEntity
 
-class CourseReaderViewModel (private val academyRepository: AcademyRepository) : ViewModel() {
+class CourseReaderViewModel(private val academyRepository: AcademyRepository) : ViewModel() {
 
     private lateinit var courseId: String
 

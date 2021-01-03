@@ -5,16 +5,15 @@ import com.example.academy.data.source.AcademyDataSource
 import com.example.academy.data.source.remote.RemoteDataSource
 
 class AcademyRepository private constructor(private val remoteDataSource: RemoteDataSource) :
-    AcademyDataSource {
+        AcademyDataSource {
 
     companion object {
         @Volatile
         private var instance: AcademyRepository? = null
-
         fun getInstance(remoteData: RemoteDataSource): AcademyRepository =
-            instance ?: synchronized(this) {
-                instance ?: AcademyRepository(remoteData)
-            }
+                instance ?: synchronized(this) {
+                    instance ?: AcademyRepository(remoteData)
+                }
     }
 
     override fun getAllCourse(): ArrayList<CourseEntity> {
@@ -36,12 +35,12 @@ class AcademyRepository private constructor(private val remoteDataSource: Remote
         val courseList = ArrayList<CourseEntity>()
         courseResponses.mapTo(courseList) {
             CourseEntity(
-                it.id,
-                it.title,
-                it.description,
-                it.date,
-                false,
-                it.imagePath)
+                    it.id,
+                    it.title,
+                    it.description,
+                    it.date,
+                    false,
+                    it.imagePath)
         }
         return courseList
     }
@@ -80,13 +79,13 @@ class AcademyRepository private constructor(private val remoteDataSource: Remote
     override fun getContent(courseId: String, moduleId: String): ModuleEntity {
         val moduleResponses = remoteDataSource.getModules(courseId)
         lateinit var module: ModuleEntity
-        for(response in moduleResponses) {
+        for (response in moduleResponses) {
             if (response.moduleId == moduleId) {
                 module = ModuleEntity(response.moduleId,
-                    response.courseId,
-                    response.title,
-                    response.position,
-                    false)
+                        response.courseId,
+                        response.title,
+                        response.position,
+                        false)
                 module.contentEntity = ContentEntity(remoteDataSource.getContent(moduleId).content)
                 break
             }

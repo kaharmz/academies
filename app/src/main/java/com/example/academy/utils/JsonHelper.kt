@@ -11,23 +11,14 @@ import java.io.IOException
 class JsonHelper(private val context: Context) {
 
     private fun parsingFileToString(fileName: String): String? {
-
         return try {
-
             val `is` = context.assets.open(fileName)
-
             val buffer = ByteArray(`is`.available())
-
             `is`.read(buffer)
-
             `is`.close()
-
             String(buffer)
-
         } catch (e: IOException) {
-
             e.printStackTrace()
-
             null
         }
     }
@@ -37,31 +28,19 @@ class JsonHelper(private val context: Context) {
         val list = ArrayList<CourseResponse>()
 
         try {
-
             val responseObject = JSONObject(parsingFileToString("CourseResponses.json").toString())
-
             val listArray = responseObject.getJSONArray("courses")
-
             (0 until listArray.length()).forEach { i ->
-
                 val course = listArray.getJSONObject(i)
-
                 val id = course.getString("id")
-
                 val title = course.getString("title")
-
                 val description = course.getString("description")
-
                 val date = course.getString("date")
-
                 val imagePath = course.getString("imagePath")
-
                 val courseResponse = CourseResponse(id, title, description, date, imagePath)
-
                 list.add(courseResponse)
             }
         } catch (e: JSONException) {
-
             e.printStackTrace()
         }
 
@@ -71,67 +50,44 @@ class JsonHelper(private val context: Context) {
     fun loadModule(courseId: String): List<ModuleResponse> {
 
         val fileName = String.format("Module_%s.json", courseId)
-
         val list = ArrayList<ModuleResponse>()
 
         try {
-
             val result = parsingFileToString(fileName)
-
             when {
-
                 result != null -> {
-
                     val responseObject = JSONObject(result)
-
                     val listArray = responseObject.getJSONArray("modules")
-
                     (0 until listArray.length()).forEach { i ->
-
                         val course = listArray.getJSONObject(i)
-
                         val moduleId = course.getString("moduleId")
-
                         val title = course.getString("title")
-
                         val position = course.getString("position")
-
                         val courseResponse =
-
-                            ModuleResponse(moduleId, courseId, title, Integer.parseInt(position))
-
+                                ModuleResponse(moduleId, courseId, title, Integer.parseInt(position))
                         list.add(courseResponse)
                     }
                 }
             }
         } catch (e: JSONException) {
-
             e.printStackTrace()
         }
-
         return list
     }
 
     fun loadContent(moduleId: String): ContentResponse {
 
         val fileName = String.format("Content_%s.json", moduleId)
-
         var contentResponse: ContentResponse? = null
 
         try {
-
             val result = parsingFileToString(fileName)
-
             if (result != null) {
-
                 val responseObject = JSONObject(result)
-
                 val content = responseObject.getString("content")
-
                 contentResponse = ContentResponse(moduleId, content)
             }
         } catch (e: JSONException) {
-
             e.printStackTrace()
         }
 
