@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.academy.R
 import com.example.academy.data.CourseEntity
 import com.example.academy.databinding.FragmentBookmarkBinding
+import com.example.academy.viewmodel.ViewModelFactory
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -31,29 +32,31 @@ class BookmarkFragment : Fragment(), BookmarkFragmentCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (activity != null) {
-            val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[BookmarkViewModel::class.java]
-            val courses = viewModel.getBookmarks()
-            val adapter = BookmarkAdapter(this)
-            adapter.setCourses(courses)
+        when {
+            activity != null -> {
+                val factory = ViewModelFactory.getInstance(requireActivity())
+                val viewModel = ViewModelProvider(this, factory)[BookmarkViewModel::class.java]
+                val courses = viewModel.getBookmarks()
+                val adapter = BookmarkAdapter(this)
+                adapter.setCourses(courses)
 
-            with(fragmentBookmarkBinding.rvBookmark) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                this.adapter = adapter
+                with(fragmentBookmarkBinding.rvBookmark) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    this.adapter = adapter
+                }
             }
         }
     }
 
     override fun onShareClick(course: CourseEntity) {
-        if (activity != null) {
-            val mimeType = "text/plain"
-            ShareCompat.IntentBuilder
-                    .from(requireActivity())
-                    .setType(mimeType)
-                    .setChooserTitle("Bagikan aplikasi ini sekarang.")
-                    .setText(resources.getString(R.string.share_text, course.title))
-                    .startChooser()
-        }
+        if (activity == null) return
+        val mimeType = "text/plain"
+        ShareCompat.IntentBuilder
+                .from(requireActivity())
+                .setType(mimeType)
+                .setChooserTitle("Bagikan aplikasi ini sekarang.")
+                .setText(resources.getString(R.string.share_text, course.title))
+                .startChooser()
     }
 }

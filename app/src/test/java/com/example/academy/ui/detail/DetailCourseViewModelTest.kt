@@ -1,11 +1,19 @@
 package com.example.academy.ui.detail
 
+import AcademyRepository
+import com.example.academy.data.ModuleEntity
 import com.example.academy.utils.DataDummy
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
+import org.mockito.junit.MockitoJUnitRunner
 
+@RunWith(MockitoJUnitRunner::class)
 class DetailCourseViewModelTest {
 
     private lateinit var viewModel: DetailCourseViewModel
@@ -14,17 +22,20 @@ class DetailCourseViewModelTest {
 
     private val courseId = dummyCourse.courseId
 
+    @Mock
+    private lateinit var academyRepository: AcademyRepository
+
     @Before
-    fun setUp(){
-        viewModel = DetailCourseViewModel()
+    fun setUp() {
+        viewModel = DetailCourseViewModel(academyRepository)
         viewModel.setSelectedCourse(courseId)
     }
 
     @Test
     fun getCourse() {
-        viewModel.setSelectedCourse(dummyCourse.courseId)
+        `when`(academyRepository.getCourseWithModules(courseId)).thenReturn(dummyCourse)
         val courseEntity = viewModel.getCourse()
-        assertNotNull(courseEntity)
+        verify(academyRepository).getCourseWithModules(courseId)
         assertEquals(dummyCourse.courseId, courseEntity.courseId)
         assertEquals(dummyCourse.deadline, courseEntity.deadline)
         assertEquals(dummyCourse.description, courseEntity.description)
@@ -34,7 +45,13 @@ class DetailCourseViewModelTest {
 
     @Test
     fun getModules() {
+
+        `when`(academyRepository.getAllModuleByCourse(courseId)).thenReturn(DataDummy.generateDummyModules(courseId) as ArrayList<ModuleEntity>?)
         val moduleEntities = viewModel.getModules()
+        verify(academyRepository).getAllModuleByCourse(courseId)
+
+        verify(academyRepository).getAllModuleByCourse(courseId)
+
         assertNotNull(moduleEntities)
         assertEquals(7, moduleEntities.size.toLong())
     }

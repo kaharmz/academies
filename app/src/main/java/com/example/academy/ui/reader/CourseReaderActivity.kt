@@ -7,6 +7,7 @@ import com.example.academy.R
 import com.example.academy.ui.reader.content.ModuleContentFragment
 import com.example.academy.ui.reader.list.CourseReaderViewModel
 import com.example.academy.ui.reader.list.ModuleListFragment
+import com.example.academy.viewmodel.ViewModelFactory
 
 class CourseReaderActivity : AppCompatActivity(), CourseReaderCallback {
 
@@ -19,7 +20,8 @@ class CourseReaderActivity : AppCompatActivity(), CourseReaderCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_reader)
 
-        val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[CourseReaderViewModel::class.java]
+        val factory = ViewModelFactory.getInstance(this)
+        val viewModel = ViewModelProvider(this, factory)[CourseReaderViewModel::class.java]
 
         val bundle = intent.extras
         if (bundle != null) {
@@ -40,20 +42,27 @@ class CourseReaderActivity : AppCompatActivity(), CourseReaderCallback {
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount <= 1) {
-            finish()
-        } else {
-            super.onBackPressed()
+        when {
+            supportFragmentManager.backStackEntryCount <= 1 -> {
+                finish()
+            }
+            else -> {
+                super.onBackPressed()
+            }
         }
     }
 
     private fun populateFragment() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         var fragment = supportFragmentManager.findFragmentByTag(ModuleListFragment.TAG)
-        if (fragment == null) {
-            fragment = ModuleListFragment.newInstance()
-            fragmentTransaction.add(R.id.frame_container, fragment, ModuleListFragment.TAG)
-            fragmentTransaction.addToBackStack(null)
+        when {
+            fragment != null -> {
+            }
+            else -> {
+                fragment = ModuleListFragment.newInstance()
+                fragmentTransaction.add(R.id.frame_container, fragment, ModuleListFragment.TAG)
+                fragmentTransaction.addToBackStack(null)
+            }
         }
         fragmentTransaction.commit()
     }
