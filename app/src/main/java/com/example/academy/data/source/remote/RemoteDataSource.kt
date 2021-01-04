@@ -1,13 +1,15 @@
 package com.example.academy.data.source.remote
 
-import com.example.academy.data.source.remote.response.ContentResponse
-import com.example.academy.data.source.remote.response.CourseResponse
-import com.example.academy.data.source.remote.response.ModuleResponse
+import android.os.Handler
 import com.example.academy.utils.JsonHelper
 
 class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
 
+    private val handler = Handler()
+
     companion object {
+
+        private const val SERVICE_LATENCY_IN_MILLIS: Long = 2000
 
         @Volatile
         private var instance: RemoteDataSource? = null
@@ -18,9 +20,18 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         }
     }
 
-    fun getAllCourse(): List<CourseResponse> = jsonHelper.loadCourse()
+    fun getAllCourse(callback: LoadCoursesCallback) {
 
-    fun getModules(courseId: String): List<ModuleResponse> = jsonHelper.loadModule(courseId)
+        handler.postDelayed({callback.onAllCoursesReceived(jsonHelper.loadCourse())}, SERVICE_LATENCY_IN_MILLIS)
+    }
 
-    fun getContent(moduleId: String): ContentResponse = jsonHelper.loadContent(moduleId)
+    fun getModules(courseId: String, callback: LoadModulesCallback){
+
+        handler.postDelayed({callback.onAllModulesReceived(jsonHelper.loadModule(courseId))}, SERVICE_LATENCY_IN_MILLIS)
+    }
+
+    fun getContent(moduleId: String, callback: LoadContentCallback) {
+
+        handler.postDelayed({callback.onContentReceived(jsonHelper.loadContent(moduleId))}, SERVICE_LATENCY_IN_MILLIS)
+    }
 }
