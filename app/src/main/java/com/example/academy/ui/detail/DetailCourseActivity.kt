@@ -44,7 +44,7 @@ class DetailCourseActivity : AppCompatActivity() {
                     activityDetailCourseBinding.progressBar.visibility = View.VISIBLE
                     activityDetailCourseBinding.content.visibility = View.INVISIBLE
                     viewModel.setSelectedCourse(courseId)
-                    viewModel.getModules().observe(this, {modules ->
+                    viewModel.getModules().observe(this, { modules ->
                         activityDetailCourseBinding.progressBar.visibility = View.GONE
                         activityDetailCourseBinding.content.visibility = View.VISIBLE
                         adapter.setModules(modules)

@@ -111,7 +111,7 @@ class AcademyRepository private constructor(private val remoteDataSource: Remote
                     when (response.moduleId) {
                         moduleId -> {
                             module = ModuleEntity(response.moduleId, response.courseId, response.title, response.position, false)
-                            remoteDataSource.getContent(moduleId, object : LoadContentCallback{
+                            remoteDataSource.getContent(moduleId, object : LoadContentCallback {
                                 override fun onContentReceived(contentResponse: ContentResponse) {
                                     module.contentEntity = ContentEntity(contentResponse.content)
                                     moduleResult.postValue(module)

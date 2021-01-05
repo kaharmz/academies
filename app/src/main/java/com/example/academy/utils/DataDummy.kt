@@ -157,6 +157,7 @@ object DataDummy {
                 "https://www.dicoding.com/images/small/academy/belajar_membuat_aplikasi_android_untuk_pemula_logo_070119140911.jpg"))
         return courses
     }
+
     fun generateRemoteDummyModules(courseId: String): List<ModuleResponse> {
         val modules = ArrayList<ModuleResponse>()
         modules.add(ModuleResponse(
@@ -190,6 +191,7 @@ object DataDummy {
                 6))
         return modules
     }
+
     fun generateRemoteDummyContent(moduleId: String): ContentResponse {
         return ContentResponse(moduleId, "This is a dummy content")
     }

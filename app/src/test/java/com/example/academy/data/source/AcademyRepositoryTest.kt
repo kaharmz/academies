@@ -31,7 +31,7 @@ class AcademyRepositoryTest {
     fun getAllCourses() {
         doAnswer { invocation ->
             (invocation.arguments[0] as LoadCoursesCallback)
-                .onAllCoursesReceived(courseResponses)
+                    .onAllCoursesReceived(courseResponses)
             null
         }.`when`(remote).getAllCourse(any())
         val courseEntities = LiveDataTestUtil.getValue(academyRepository.getAllCourse())
@@ -44,7 +44,7 @@ class AcademyRepositoryTest {
     fun getAllModulesByCourse() {
         doAnswer { invocation ->
             (invocation.arguments[1] as LoadModulesCallback)
-                .onAllModulesReceived(moduleResponses)
+                    .onAllModulesReceived(moduleResponses)
             null
         }.`when`(remote).getModules(eq(courseId), any())
         val courseEntities = LiveDataTestUtil.getValue(academyRepository.getAllModuleByCourse(courseId))
@@ -57,7 +57,7 @@ class AcademyRepositoryTest {
     fun getBookmarkedCourses() {
         doAnswer { invocation ->
             (invocation.arguments[0] as LoadCoursesCallback)
-                .onAllCoursesReceived(courseResponses)
+                    .onAllCoursesReceived(courseResponses)
             null
         }.`when`(remote).getAllCourse(any())
         val courseEntities = LiveDataTestUtil.getValue(academyRepository.getBookmarkedCourse())
@@ -70,19 +70,19 @@ class AcademyRepositoryTest {
     fun getContent() {
         doAnswer { invocation ->
             (invocation.arguments[1] as LoadModulesCallback)
-                .onAllModulesReceived(moduleResponses)
+                    .onAllModulesReceived(moduleResponses)
             null
         }.`when`(remote).getModules(eq(courseId), any())
         doAnswer { invocation ->
             (invocation.arguments[1] as LoadContentCallback)
-                .onContentReceived(content)
+                    .onContentReceived(content)
             null
         }.`when`(remote).getContent(eq(moduleId), any())
         val courseEntitiesContent = LiveDataTestUtil.getValue(academyRepository.getContent(courseId, moduleId))
         verify(remote)
-            .getModules(eq(courseId), any())
+                .getModules(eq(courseId), any())
         verify(remote)
-            .getContent(eq(moduleId), any())
+                .getContent(eq(moduleId), any())
         assertNotNull(courseEntitiesContent)
         assertNotNull(courseEntitiesContent.contentEntity)
         assertNotNull(courseEntitiesContent.contentEntity?.content)
@@ -93,7 +93,7 @@ class AcademyRepositoryTest {
     fun getCourseWithModules() {
         doAnswer { invocation ->
             (invocation.arguments[0] as LoadCoursesCallback)
-                .onAllCoursesReceived(courseResponses)
+                    .onAllCoursesReceived(courseResponses)
             null
         }.`when`(remote).getAllCourse(any())
         val courseEntities = LiveDataTestUtil.getValue(academyRepository.getCourseWithModules(courseId))

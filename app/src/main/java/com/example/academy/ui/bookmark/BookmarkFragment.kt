@@ -38,7 +38,7 @@ class BookmarkFragment : Fragment(), BookmarkFragmentCallback {
                 val viewModel = ViewModelProvider(this, factory)[BookmarkViewModel::class.java]
                 val adapter = BookmarkAdapter(this)
                 fragmentBookmarkBinding.progressBar.visibility = View.VISIBLE
-                viewModel.getBookmarks().observe(this, {courses ->
+                viewModel.getBookmarks().observe(this, { courses ->
                     fragmentBookmarkBinding.progressBar.visibility = View.GONE
                     adapter.setCourses(courses)
                     adapter.notifyDataSetChanged()

@@ -1,7 +1,9 @@
 package com.example.academy.ui.home
 
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -9,6 +11,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.rule.ActivityTestRule
 import com.example.academy.R
 import com.example.academy.utils.DataDummy
+import com.example.academy.utils.EspressoIdlingResource
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -16,8 +21,16 @@ class HomeActivityTest {
 
     private val dummyCourse = DataDummy.generateDummyCourse()
 
-    @get:Rule
-    var activityRule = ActivityTestRule(HomeActivity::class.java)
+    @Before
+    fun setUp(){
+        ActivityScenario.launch(HomeActivity::class.java)
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.espressoTestIdlingResource)
+    }
+
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.espressoTestIdlingResource)
+    }
 
     @Test
     fun loadCourses() {
