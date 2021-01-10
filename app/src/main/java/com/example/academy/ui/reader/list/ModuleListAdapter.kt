@@ -3,11 +3,11 @@ package com.example.academy.ui.reader.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.academy.data.ModuleEntity
+import com.example.academy.data.source.local.entity.ModuleEntity
 import com.example.academy.databinding.ItemsModuleListCustomBinding
 
 class ModuleListAdapter internal constructor(private val listener: MyAdapterClickListener) :
-        RecyclerView.Adapter<ModuleListAdapter.ModuleViewHolder>() {
+    RecyclerView.Adapter<ModuleListAdapter.ModuleViewHolder>() {
     private val listModules = ArrayList<ModuleEntity>()
 
     internal fun setModules(modules: List<ModuleEntity>?) {
@@ -18,7 +18,7 @@ class ModuleListAdapter internal constructor(private val listener: MyAdapterClic
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModuleViewHolder {
         val binding =
-                ItemsModuleListCustomBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemsModuleListCustomBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ModuleViewHolder(binding)
     }
 
@@ -27,8 +27,8 @@ class ModuleListAdapter internal constructor(private val listener: MyAdapterClic
         viewHolder.bind(module)
         viewHolder.itemView.setOnClickListener {
             listener.onItemClicked(
-                    viewHolder.adapterPosition,
-                    listModules[viewHolder.adapterPosition].moduleId
+                viewHolder.adapterPosition,
+                listModules[viewHolder.adapterPosition].moduleId
             )
         }
     }
@@ -36,7 +36,7 @@ class ModuleListAdapter internal constructor(private val listener: MyAdapterClic
     override fun getItemCount(): Int = listModules.size
 
     inner class ModuleViewHolder(private val binding: ItemsModuleListCustomBinding) :
-            RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(module: ModuleEntity) {
             binding.textModuleTitle.text = module.title
         }

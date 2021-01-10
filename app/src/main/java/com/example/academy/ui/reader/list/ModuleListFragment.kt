@@ -5,15 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.academy.data.ModuleEntity
+import com.example.academy.data.source.local.entity.ModuleEntity
 import com.example.academy.databinding.FragmentModuleListBinding
 import com.example.academy.ui.reader.CourseReaderActivity
 import com.example.academy.ui.reader.CourseReaderCallback
 import com.example.academy.viewmodel.ViewModelFactory
+import com.example.academy.vo.Status
 
 
 class ModuleListFragment : Fragment(), MyAdapterClickListener {
@@ -29,8 +31,8 @@ class ModuleListFragment : Fragment(), MyAdapterClickListener {
     private lateinit var viewModel: CourseReaderViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         fragmentModuleListBinding = FragmentModuleListBinding.inflate(inflater, container, false)
@@ -42,10 +44,20 @@ class ModuleListFragment : Fragment(), MyAdapterClickListener {
         val factory = ViewModelFactory.getInstance(requireActivity())
         viewModel = ViewModelProvider(requireActivity(), factory)[CourseReaderViewModel::class.java]
         adapter = ModuleListAdapter(this)
-        fragmentModuleListBinding.progressBar.visibility = View.VISIBLE
-        viewModel.getModules().observe(this, { modules ->
-            fragmentModuleListBinding.progressBar.visibility = View.GONE
-            populateRecyclerView(modules)
+        viewModel.modules.observe(this, { moduleEntities ->
+            if (moduleEntities != null) {
+                when (moduleEntities.status) {
+                    Status.LOADING -> fragmentModuleListBinding?.progressBar?.visibility = View.VISIBLE
+                    Status.SUCCESS -> {
+                        fragmentModuleListBinding?.progressBar?.visibility = View.GONE
+                        populateRecyclerView(moduleEntities.data as List<ModuleEntity>)
+                    }
+                    Status.ERROR -> {
+                        fragmentModuleListBinding?.progressBar?.visibility = View.GONE
+                        Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         })
     }
 
@@ -67,7 +79,7 @@ class ModuleListFragment : Fragment(), MyAdapterClickListener {
             rvModule.setHasFixedSize(true)
             rvModule.adapter = adapter
             val dividerItemDecoration =
-                    DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+                DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
             rvModule.addItemDecoration(dividerItemDecoration)
         }
     }

@@ -31,6 +31,8 @@ ext {
     mockitoKotlinVersion = '2.2.0'
     archLifecycleVersion = '2.1.0'
     idleResourceVersion = '3.3.0'
+    roomVersion = '2.2.6'
+    roomRuntimeVersion = '2.2.6'
 }
 
 allprojects {

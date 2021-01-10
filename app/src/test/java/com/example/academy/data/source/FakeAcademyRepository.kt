@@ -1,19 +1,16 @@
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.academy.data.ContentEntity
-import com.example.academy.data.CourseEntity
-import com.example.academy.data.ModuleEntity
 import com.example.academy.data.source.AcademyDataSource
-import com.example.academy.data.source.remote.LoadContentCallback
-import com.example.academy.data.source.remote.LoadCoursesCallback
-import com.example.academy.data.source.remote.LoadModulesCallback
+import com.example.academy.data.source.local.entity.ContentEntity
+import com.example.academy.data.source.local.entity.CourseEntity
+import com.example.academy.data.source.local.entity.ModuleEntity
 import com.example.academy.data.source.remote.RemoteDataSource
 import com.example.academy.data.source.remote.response.ContentResponse
 import com.example.academy.data.source.remote.response.CourseResponse
 import com.example.academy.data.source.remote.response.ModuleResponse
 
 class FakeAcademyRepository(private val remoteDataSource: RemoteDataSource) :
-        AcademyDataSource {
+    AcademyDataSource {
 
     override fun getAllCourse(): LiveData<List<CourseEntity>> {
         val courseResults = MutableLiveData<List<CourseEntity>>()
@@ -21,12 +18,14 @@ class FakeAcademyRepository(private val remoteDataSource: RemoteDataSource) :
             override fun onAllCoursesReceived(courseResponses: List<CourseResponse>) {
                 val courseList = ArrayList<CourseEntity>()
                 courseResponses.mapTo(courseList) {
-                    CourseEntity(it.id,
-                            it.title,
-                            it.description,
-                            it.date,
-                            false,
-                            it.imagePath)
+                    CourseEntity(
+                        it.id,
+                        it.title,
+                        it.description,
+                        it.date,
+                        false,
+                        it.imagePath
+                    )
                 }
                 courseResults.postValue(courseList)
             }
@@ -40,12 +39,14 @@ class FakeAcademyRepository(private val remoteDataSource: RemoteDataSource) :
             override fun onAllCoursesReceived(courseResponses: List<CourseResponse>) {
                 val courseList = ArrayList<CourseEntity>()
                 courseResponses.mapTo(courseList) {
-                    CourseEntity(it.id,
-                            it.title,
-                            it.description,
-                            it.date,
-                            false,
-                            it.imagePath)
+                    CourseEntity(
+                        it.id,
+                        it.title,
+                        it.description,
+                        it.date,
+                        false,
+                        it.imagePath
+                    )
                 }
                 courseResults.postValue(courseList)
             }
@@ -59,16 +60,18 @@ class FakeAcademyRepository(private val remoteDataSource: RemoteDataSource) :
             override fun onAllCoursesReceived(courseResponses: List<CourseResponse>) {
                 lateinit var course: CourseEntity
                 courseResponses
-                        .asSequence()
-                        .filter { it.id == courseId }
-                        .forEach {
-                            course = CourseEntity(it.id,
-                                    it.title,
-                                    it.description,
-                                    it.date,
-                                    false,
-                                    it.imagePath)
-                        }
+                    .asSequence()
+                    .filter { it.id == courseId }
+                    .forEach {
+                        course = CourseEntity(
+                            it.id,
+                            it.title,
+                            it.description,
+                            it.date,
+                            false,
+                            it.imagePath
+                        )
+                    }
                 courseResult.postValue(course)
             }
         })
@@ -81,11 +84,13 @@ class FakeAcademyRepository(private val remoteDataSource: RemoteDataSource) :
             override fun onAllModulesReceived(moduleResponses: List<ModuleResponse>) {
                 val moduleList = ArrayList<ModuleEntity>()
                 moduleResponses.mapTo(moduleList) {
-                    ModuleEntity(it.moduleId,
-                            it.courseId,
-                            it.title,
-                            it.position,
-                            false)
+                    ModuleEntity(
+                        it.moduleId,
+                        it.courseId,
+                        it.title,
+                        it.position,
+                        false
+                    )
                 }
                 moduleResults.postValue(moduleList)
             }
@@ -101,7 +106,13 @@ class FakeAcademyRepository(private val remoteDataSource: RemoteDataSource) :
                 loop@ for (response in moduleResponses) {
                     when (response.moduleId) {
                         moduleId -> {
-                            module = ModuleEntity(response.moduleId, response.courseId, response.title, response.position, false)
+                            module = ModuleEntity(
+                                response.moduleId,
+                                response.courseId,
+                                response.title,
+                                response.position,
+                                false
+                            )
                             remoteDataSource.getContent(moduleId, object : LoadContentCallback {
                                 override fun onContentReceived(contentResponse: ContentResponse) {
                                     module.contentEntity = ContentEntity(contentResponse.content)

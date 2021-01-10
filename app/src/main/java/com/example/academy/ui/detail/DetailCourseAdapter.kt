@@ -3,7 +3,7 @@ package com.example.academy.ui.detail
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.academy.data.ModuleEntity
+import com.example.academy.data.source.local.entity.ModuleEntity
 import com.example.academy.databinding.ItemsModuleListBinding
 
 class DetailCourseAdapter : RecyclerView.Adapter<DetailCourseAdapter.ModuleViewHolder>() {
@@ -18,7 +18,7 @@ class DetailCourseAdapter : RecyclerView.Adapter<DetailCourseAdapter.ModuleViewH
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModuleViewHolder {
         val itemModuleListBinding =
-                ItemsModuleListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemsModuleListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ModuleViewHolder(itemModuleListBinding)
     }
 
@@ -30,7 +30,7 @@ class DetailCourseAdapter : RecyclerView.Adapter<DetailCourseAdapter.ModuleViewH
     override fun getItemCount(): Int = listModules.size
 
     inner class ModuleViewHolder(private val binding: ItemsModuleListBinding) :
-            RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(module: ModuleEntity) {
             binding.textModuleTitle.text = module.title
         }

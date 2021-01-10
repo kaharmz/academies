@@ -64,7 +64,7 @@ class JsonHelper(private val context: Context) {
                         val title = course.getString("title")
                         val position = course.getString("position")
                         val courseResponse =
-                                ModuleResponse(moduleId, courseId, title, Integer.parseInt(position))
+                            ModuleResponse(moduleId, courseId, title, Integer.parseInt(position))
                         list.add(courseResponse)
                     }
                 }

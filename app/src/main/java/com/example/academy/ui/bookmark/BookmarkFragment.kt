@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.academy.R
-import com.example.academy.data.CourseEntity
+import com.example.academy.data.source.local.entity.CourseEntity
 import com.example.academy.databinding.FragmentBookmarkBinding
 import com.example.academy.viewmodel.ViewModelFactory
 
@@ -21,8 +21,8 @@ class BookmarkFragment : Fragment(), BookmarkFragmentCallback {
     lateinit var fragmentBookmarkBinding: FragmentBookmarkBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         fragmentBookmarkBinding = FragmentBookmarkBinding.inflate(inflater, container, false)
@@ -57,10 +57,10 @@ class BookmarkFragment : Fragment(), BookmarkFragmentCallback {
         if (activity == null) return
         val mimeType = "text/plain"
         ShareCompat.IntentBuilder
-                .from(requireActivity())
-                .setType(mimeType)
-                .setChooserTitle("Bagikan aplikasi ini sekarang.")
-                .setText(resources.getString(R.string.share_text, course.title))
-                .startChooser()
+            .from(requireActivity())
+            .setType(mimeType)
+            .setChooserTitle("Bagikan aplikasi ini sekarang.")
+            .setText(resources.getString(R.string.share_text, course.title))
+            .startChooser()
     }
 }

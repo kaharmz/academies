@@ -1,6 +1,5 @@
 package com.example.academy.viewmodel
 
-import AcademyRepository
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,33 +8,35 @@ import com.example.academy.ui.academy.AcademyViewModel
 import com.example.academy.ui.bookmark.BookmarkViewModel
 import com.example.academy.ui.detail.DetailCourseViewModel
 import com.example.academy.ui.reader.list.CourseReaderViewModel
+import com.example.academy.data.source.AcademyRepository
 
-class ViewModelFactory private constructor(private val mAcademyRepository: AcademyRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory private constructor(private val academyRepository: AcademyRepository) :
+    ViewModelProvider.NewInstanceFactory() {
 
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null
 
         fun getInstance(context: Context): ViewModelFactory =
-                instance ?: synchronized(this) {
-                    instance ?: ViewModelFactory(Injection.provideRepository(context))
-                }
+            instance ?: synchronized(this) {
+                instance ?: ViewModelFactory(Injection.provideRepository(context))
+            }
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(AcademyViewModel::class.java) -> {
-                AcademyViewModel(mAcademyRepository) as T
+                AcademyViewModel(academyRepository) as T
             }
             modelClass.isAssignableFrom(DetailCourseViewModel::class.java) -> {
-                DetailCourseViewModel(mAcademyRepository) as T
+                DetailCourseViewModel(academyRepository) as T
             }
             modelClass.isAssignableFrom(BookmarkViewModel::class.java) -> {
-                BookmarkViewModel(mAcademyRepository) as T
+                BookmarkViewModel(academyRepository) as T
             }
             modelClass.isAssignableFrom(CourseReaderViewModel::class.java) -> {
-                CourseReaderViewModel(mAcademyRepository) as T
+                CourseReaderViewModel(academyRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

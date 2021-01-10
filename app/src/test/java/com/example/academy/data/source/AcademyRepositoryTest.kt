@@ -1,7 +1,4 @@
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.academy.data.source.remote.LoadContentCallback
-import com.example.academy.data.source.remote.LoadCoursesCallback
-import com.example.academy.data.source.remote.LoadModulesCallback
 import com.example.academy.data.source.remote.RemoteDataSource
 import com.example.academy.utils.DataDummy
 import com.example.academy.utils.LiveDataTestUtil
@@ -31,7 +28,7 @@ class AcademyRepositoryTest {
     fun getAllCourses() {
         doAnswer { invocation ->
             (invocation.arguments[0] as LoadCoursesCallback)
-                    .onAllCoursesReceived(courseResponses)
+                .onAllCoursesReceived(courseResponses)
             null
         }.`when`(remote).getAllCourse(any())
         val courseEntities = LiveDataTestUtil.getValue(academyRepository.getAllCourse())
@@ -44,10 +41,11 @@ class AcademyRepositoryTest {
     fun getAllModulesByCourse() {
         doAnswer { invocation ->
             (invocation.arguments[1] as LoadModulesCallback)
-                    .onAllModulesReceived(moduleResponses)
+                .onAllModulesReceived(moduleResponses)
             null
         }.`when`(remote).getModules(eq(courseId), any())
-        val courseEntities = LiveDataTestUtil.getValue(academyRepository.getAllModuleByCourse(courseId))
+        val courseEntities =
+            LiveDataTestUtil.getValue(academyRepository.getAllModuleByCourse(courseId))
         verify(remote).getModules(eq(courseId), any())
         assertNotNull(courseEntities)
         assertEquals(moduleResponses.size.toLong(), courseEntities.size.toLong())
@@ -57,7 +55,7 @@ class AcademyRepositoryTest {
     fun getBookmarkedCourses() {
         doAnswer { invocation ->
             (invocation.arguments[0] as LoadCoursesCallback)
-                    .onAllCoursesReceived(courseResponses)
+                .onAllCoursesReceived(courseResponses)
             null
         }.`when`(remote).getAllCourse(any())
         val courseEntities = LiveDataTestUtil.getValue(academyRepository.getBookmarkedCourse())
@@ -70,19 +68,20 @@ class AcademyRepositoryTest {
     fun getContent() {
         doAnswer { invocation ->
             (invocation.arguments[1] as LoadModulesCallback)
-                    .onAllModulesReceived(moduleResponses)
+                .onAllModulesReceived(moduleResponses)
             null
         }.`when`(remote).getModules(eq(courseId), any())
         doAnswer { invocation ->
             (invocation.arguments[1] as LoadContentCallback)
-                    .onContentReceived(content)
+                .onContentReceived(content)
             null
         }.`when`(remote).getContent(eq(moduleId), any())
-        val courseEntitiesContent = LiveDataTestUtil.getValue(academyRepository.getContent(courseId, moduleId))
+        val courseEntitiesContent =
+            LiveDataTestUtil.getValue(academyRepository.getContent(courseId, moduleId))
         verify(remote)
-                .getModules(eq(courseId), any())
+            .getModules(eq(courseId), any())
         verify(remote)
-                .getContent(eq(moduleId), any())
+            .getContent(eq(moduleId), any())
         assertNotNull(courseEntitiesContent)
         assertNotNull(courseEntitiesContent.contentEntity)
         assertNotNull(courseEntitiesContent.contentEntity?.content)
@@ -93,10 +92,11 @@ class AcademyRepositoryTest {
     fun getCourseWithModules() {
         doAnswer { invocation ->
             (invocation.arguments[0] as LoadCoursesCallback)
-                    .onAllCoursesReceived(courseResponses)
+                .onAllCoursesReceived(courseResponses)
             null
         }.`when`(remote).getAllCourse(any())
-        val courseEntities = LiveDataTestUtil.getValue(academyRepository.getCourseWithModules(courseId))
+        val courseEntities =
+            LiveDataTestUtil.getValue(academyRepository.getCourseWithModules(courseId))
         verify(remote).getAllCourse(any())
         assertNotNull(courseEntities)
         assertNotNull(courseEntities.title)
