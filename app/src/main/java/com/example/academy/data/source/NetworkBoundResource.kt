@@ -7,6 +7,7 @@ import com.example.academy.data.source.remote.StatusResponse
 import com.example.academy.utils.AppExecutors
 import com.example.academy.vo.Resource
 
+
 abstract class NetworkBoundResource<ResultType, RequestType>(private val mExecutors: AppExecutors) {
 
     private val result = MediatorLiveData<Resource<ResultType>>()
@@ -29,7 +30,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>(private val mExecut
         }
     }
 
-    protected fun onFetchFailed() {}
+    protected open fun onFetchFailed() {}
 
     protected abstract fun loadFromDB(): LiveData<ResultType>
 

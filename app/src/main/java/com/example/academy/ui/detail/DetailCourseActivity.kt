@@ -29,33 +29,24 @@ class DetailCourseActivity : AppCompatActivity() {
     }
 
     private var _activityDetailCourseBinding: ActivityDetailCourseBinding? = null
-
     private val mainBinding get() = _activityDetailCourseBinding
     private val contentBinding get() = _activityDetailCourseBinding?.detailContent
-
     private lateinit var viewModel: DetailCourseViewModel
     private var menu: Menu? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         _activityDetailCourseBinding = ActivityDetailCourseBinding.inflate(layoutInflater)
         setContentView(mainBinding?.root)
-
         setSupportActionBar(mainBinding?.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         val adapter = DetailCourseAdapter()
-
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[DetailCourseViewModel::class.java]
-
         val extras = intent.extras
         if (extras != null) {
             val courseId = extras.getString(EXTRA_COURSE)
             if (courseId != null) {
                 viewModel.setSelectedCourse(courseId)
-
                 viewModel.courseModule.observe(this, { courseWithModuleResource ->
                     if (courseWithModuleResource != null) {
                         when (courseWithModuleResource.status) {
@@ -92,7 +83,6 @@ class DetailCourseActivity : AppCompatActivity() {
         contentBinding?.textTitle?.text = courseEntity.title
         contentBinding?.textDescription?.text = courseEntity.description
         contentBinding?.textDate?.text = resources.getString(R.string.deadline_date, courseEntity.deadline)
-
         contentBinding?.imagePoster?.let {
             Glide.with(this)
                 .load(courseEntity.imagePath)
